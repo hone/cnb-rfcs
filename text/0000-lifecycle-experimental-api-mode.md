@@ -1,6 +1,6 @@
 # Meta
 [meta]: #meta
-- Name: Lifecycle Experimental API Mode
+- Name: Lifecycle Experimantal API Mode and Prelease APIs
 - Start Date: 2020-08-25
 - Author(s): @hone
 - RFC Pull Request: (leave blank)
@@ -25,30 +25,36 @@ In order to have a smooth transition to 1.0 of the spec, there needs to be a way
 # What it is
 [what-it-is]: #what-it-is
 
+There will be a release mode
 `experimental` is a new API mode for testing out unreleased API / spec changes on their path to being finalized. An experimental API can not be `deprecated` or `supported` as defined in [RFC#49](https://github.com/buildpacks/rfcs/blob/main/text/0049-multi-api-lifecycle-descriptor.md).
 
-## Lifecycle Descriptor
+## Prerelease API
+
+* the APIs will correspond to specs that may not be released and in branches that are still being worked on.
+the API version must be of the format: `<major>.<minor>-<alphanumeric>`, i.e. `1.0-alpha1`.
+
+
+## Experimental API Mode
+### Lifecycle Descriptor
 
 This RFC proposes the addition of the `experimental` key in `lifecycle.toml` following the proposed schema:
 
 ```
 [apis]
 [apis.buildpack]
-  experimental = ["0.6-rc1", "1.0-alpha1"]
+  experimental = ["0.7.0", "1.0-alpha1"]
 [apis.platform]
-  experimental = ["1.0-alpha1"]
+  experimental = ["0.8.0"]
 
 [lifecycle]
   version = "0.10.0"
 ```
 `experimental`:
-contains an array of experimental API versions
-the APIs will correspond to specs that may not be released and in branches that are still being worked on.
-the API version must be of the format: `<major>.<minor>-<alphanumeric>`, i.e. `1.0-alpha1`.
+* contains an array of experimental API versions
 
 Since experimental versions are defined with a different format, they will NOT automatically get upgraded to a `supported` release when the experimental API has finalized.
 
-## Lifecycle Labels
+### Lifecycle Labels
 This will extend the the `io.buildpacks.lifecycle.apis` label on the builder or lifecycle image with the values contained in the above descriptor file. For example:
 ```json
 {
@@ -60,6 +66,7 @@ This will extend the the `io.buildpacks.lifecycle.apis` label on the builder or 
   }
 }
 ```
+
 
 ## API Types
 ### Experimental APIs
